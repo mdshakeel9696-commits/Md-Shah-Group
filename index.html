@@ -101,25 +101,66 @@
 
   <section class="section">
   <h2>Shah Transport Request</h2>
-    <form action="mailto:afiyaopticians@gmail.com" method="post" enctype="text/plain">
-      <label>Name</label>
-      <input type="text" name="name" required>
-      <label>Contact Number</label>
-      <input type="text" name="contact" required>
-      <label>Pickup Address</label>
-      <input type="text" name="pickup" required>
-      <label>Drop Address</label>
-      <input type="text" name="drop" required>
-      <label>Distance (km)</label>
-      <input type="text" name="distance" placeholder="Enter distance in km" required>
-      <label>Total Price (45/km)</label>
-      <input type="text" name="price" placeholder="Distance × 45 = Price" required>
-      <label>Type of Goods</label>
-      <input type="text" name="goods" placeholder="e.g. furniture, parcels">
-      <button type="submit">Submit Request</button>
-    </form>
-  </section>
-  
+
+  <!-- Load Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+  <script>
+    function calculateDistance() {
+      const pickup = document.getElementById("pickup").value;
+      const drop = document.getElementById("drop").value;
+      const ratePerKm = 45;
+
+      if (pickup && drop) {
+        const service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+          {
+            origins: [pickup],
+            destinations: [drop],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.METRIC
+          },
+          function (response, status) {
+            if (status === 'OK') {
+              const distanceValue = response.rows[0].elements[0].distance.value / 1000; // in km
+              const price = distanceValue * ratePerKm;
+
+              document.getElementById("distance").value = distanceValue.toFixed(2);
+              document.getElementById("price").value = "₹" + price.toFixed(2);
+            } else {
+              alert("Unable to calculate distance: " + status);
+            }
+          }
+        );
+      }
+    }
+  </script>
+
+  <form action="mailto:afiyaopticians@gmail.com" method="post" enctype="text/plain">
+    <label>Name</label>
+    <input type="text" name="name" required>
+
+    <label>Contact Number</label>
+    <input type="text" name="contact" required>
+
+    <label>Pickup Address</label>
+    <input type="text" id="pickup" name="pickup" required onblur="calculateDistance()">
+
+    <label>Drop Address</label>
+    <input type="text" id="drop" name="drop" required onblur="calculateDistance()">
+
+    <label>Distance (km)</label>
+    <input type="text" id="distance" name="distance" readonly>
+
+    <label>Total Price (₹45/km)</label>
+    <input type="text" id="price" name="price" readonly>
+
+    <label>Type of Goods</label>
+    <input type="text" name="goods" placeholder="e.g. furniture, parcels">
+
+    <button type="submit">Submit Request</button>
+  </form>
+</section>
+ 
 </main>
 
 <footer>
@@ -132,6 +173,7 @@ WebDeveloper: Md Shakil Shaikh / 9696854577
 
 </body>
 </html>
+
 
 
 
