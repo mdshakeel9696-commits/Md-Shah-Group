@@ -100,51 +100,25 @@
   </section>
 
   <section class="section">
-   <title>Shah Transport Fare Calculator</title>
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
-  <script>
-    function calculateDistance() {
-      const pickup = document.getElementById("pickup").value;
-      const drop = document.getElementById("drop").value;
-      const ratePerKm = 45;
-
-      const service = new google.maps.DistanceMatrixService();
-      service.getDistanceMatrix(
-        {
-          origins: [pickup],
-          destinations: [drop],
-          travelMode: 'DRIVING',
-          unitSystem: google.maps.UnitSystem.METRIC
-        },
-        function (response, status) {
-          if (status === 'OK') {
-            const distanceText = response.rows[0].elements[0].distance.text;
-            const distanceValue = response.rows[0].elements[0].distance.value / 1000; // in km
-            const price = distanceValue * ratePerKm;
-
-            document.getElementById("distance").innerText = "Distance: " + distanceText;
-            document.getElementById("price").innerText = "Price: ₹" + price.toFixed(2);
-          } else {
-            alert("Error: " + status);
-          }
-        }
-      );
-    }
-  </script>
-</head>
-<body style="font-family:sans-serif; padding:20px;">
-  <h2>Shah Transport Fare Estimator</h2>
-
-  <label>Pickup Location:</label><br>
-  <input id="pickup" type="text" placeholder="Enter pickup location" style="width:300px;"><br><br>
-
-  <label>Drop Location:</label><br>
-  <input id="drop" type="text" placeholder="Enter drop location" style="width:300px;"><br><br>
-
-  <button onclick="calculateDistance()">Calculate</button>
-
-  <h3 id="distance"></h3>
-  <h3 id="price"></h3>
+  <h2>Shah Transport Request</h2>
+    <form action="mailto:afiyaopticians@gmail.com" method="post" enctype="text/plain">
+      <label>Name</label>
+      <input type="text" name="name" required>
+      <label>Contact Number</label>
+      <input type="text" name="contact" required>
+      <label>Pickup Address</label>
+      <input type="text" name="pickup" required>
+      <label>Drop Address</label>
+      <input type="text" name="drop" required>
+      <label>Distance (km)</label>
+      <input type="text" name="distance" placeholder="Enter distance in km" required>
+      <label>Total Price (?15/km)</label>
+      <input type="text" name="price" placeholder="Distance × 15 = Price" required>
+      <label>Type of Goods</label>
+      <input type="text" name="goods" placeholder="e.g. furniture, parcels">
+      <button type="submit">Submit Request</button>
+    </form>
+  </section>
   
 </main>
 
@@ -158,6 +132,7 @@ WebDeveloper: Md Shakil Shaikh / 9696854577
 
 </body>
 </html>
+
 
 
 
